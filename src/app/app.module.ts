@@ -1,5 +1,5 @@
 import { appReducers } from './app.reducer';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -23,6 +23,9 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { environment } from '../environments/environment';
+import { OrdenIngresoEgresoPipe } from './ingreso-egreso/orden-ingreso-egreso.pipe';
+
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -35,13 +38,16 @@ import { environment } from '../environments/environment';
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
-    RegisterComponent
+    RegisterComponent,
+    OrdenIngresoEgresoPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     StoreModule.forRoot(appReducers),
+    ReactiveFormsModule,
+    ChartsModule,
     // AngularFireModule,
     AngularFireModule.initializeApp(environment.firebase),
     StoreDevtoolsModule.instrument({

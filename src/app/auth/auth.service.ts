@@ -1,4 +1,4 @@
-import { SetUserAction } from './auth.actions';
+import { SetUserAction, UnsetUserAction } from './auth.actions';
 
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -13,6 +13,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../app.reducer';
 import { ActivarLoginAction, DesactivarLoginAction } from '../shared/ui.accion';
 import { Subscription } from 'rxjs';
+import { UnsetItemsAction } from '../ingreso-egreso/ingreso-egreso.actions';
 
 
 
@@ -22,6 +23,7 @@ import { Subscription } from 'rxjs';
 export class AuthService {
 
   private userSubcription: Subscription = new Subscription();
+  private usuario: User;
 
   constructor(private afAuth: AngularFireAuth,
               private route: Router,
@@ -34,9 +36,12 @@ export class AuthService {
       if (fbUser) {
       this.userSubcription =  this.afDB.doc(`${fbUser.uid}/usuario`).valueChanges().subscribe( usuarioOb => {
           const user = new User(usuarioOb);
+          this.usuario = user;
           this.store.dispatch(new SetUserAction(user));
         });
       } else {
+
+        this.usuario = null;
         this.userSubcription.unsubscribe();
       }
 
@@ -86,6 +91,8 @@ export class AuthService {
 
   logout() {
     this.afAuth.auth.signOut();
+    this.store.dispatch(new UnsetUserAction());
+    this.store.dispatch(new UnsetItemsAction());
     this.route.navigate(['/login']);
   }
 
@@ -96,6 +103,11 @@ export class AuthService {
       }
       return fbUser !== null;
     }  ) );
+  }
+
+
+  getUsuario() {
+    return {... this.usuario};
   }
 
 }
