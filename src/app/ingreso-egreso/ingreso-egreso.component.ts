@@ -4,11 +4,13 @@ import { IngresoEgreso } from './ingreso-egreso.model';
 import { IngresoEgresoService } from './ingreso-egreso.service';
 import Swal from 'sweetalert2';
 import { Store } from '@ngrx/store';
-import { AppState } from '../app.reducer';
+
 import { Subscription } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 
 import { ActivarLoginAction, DesactivarLoginAction } from '../shared/ui.accion';
+import * as fromIngresoEgreso from './ingreso-egreso.reducer';
+
 
 @Component({
   selector: 'app-ingreso-egreso',
@@ -23,7 +25,7 @@ export class IngresoEgresoComponent implements OnInit, OnDestroy {
    tipo = 'ingreso';
    loadingSub: Subscription = new Subscription();
    cargando: boolean;
-  constructor(private ingresoEgresoService: IngresoEgresoService, private store: Store<AppState>) { }
+  constructor(private ingresoEgresoService: IngresoEgresoService, private store: Store<fromIngresoEgreso.AppState>) { }
 
   ngOnInit() {
    this.store.select('ui')
